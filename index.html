@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Title Page</title>
+
+
+    </head>
+    <body>
+        <h1 class="text-center">输入时间</h1>
+        <input id="times" type="" name="">
+        <button id="subMit" onclick="check()">查询</button>
+    </body>
+</html>
+<script type="text/javascript">
+
+
+     function check(){
+        var value = document.getElementById("times").value;
+         alert(getLastTime(value));
+     }
+    function getLastTime(timeStr)
+    {       
+        var lastTime=new Date(timeStr).getTime() ; 
+       //获取传进来的时间 单位为毫秒
+        var nowTime =new Date();   //获取当前时间
+        var timeLength = parseInt((nowTime-lastTime)/1000);
+        var str="" ;
+        var  minute=null ; //分钟
+        var  hour=null ;//小时
+        var  day=null ;//天
+        var  month=null;//月
+        var  year = null;//年
+        getTime(timeLength);
+
+        //对获取为空的值进行过滤
+        if(year){
+           str += year+'年'; 
+        }
+        if(month){
+            str +=month+'月';
+        }
+        if(day){
+
+            if((!year)&&(!month)){
+                if(day==1){
+                    str+="昨天"
+                }else if(day==2){
+
+                    str +="前天"
+                }else{
+                    str +=day+'天';
+                }
+            }else{
+
+                 str +=day+'天';
+            }
+        }
+        if(hour){
+
+            if(!minute){
+                if(hour>=10){
+                     str +=hour+':00';   
+                }else{
+
+                     str +=+'0'+hour+':00'; 
+                }
+                
+            }else{
+
+                if(hour>=10){
+                     str +=hour+':';   
+                }else{
+
+                     str +='0'+hour+':'; 
+                }
+               
+            }
+           
+
+        }
+        if(minute){
+            if(!hour){
+                if(minute>=10)
+                    str +='00:'+minute; 
+                else
+                    str +='00:'+'0'+minute;  
+            }else{
+
+                if(minute>=10)
+                    str +=minute; 
+                else
+                    str +='0'+minute;  
+            }
+        }
+
+        if(year||month||day||hour||minute){
+
+            if(year||month||(day>2)||(!day)){
+                    str+='前';
+            }
+            
+           
+        }else{
+            str +='刚刚';
+        }
+         function getTime(timeLength){
+             if(timeLength>=60*60*24*30*12) //大于一年的时候
+             {
+                year = parseInt(timeLength/3600/24/30/12);
+                timeLength = timeLength%(3600*24*30*12);  //对一年的时间进行取模
+                getTime(timeLength);
+             }
+             if(60*60*24*30<=timeLength&&timeLength < 60*60*24*30*12)  //当时间戳大于一个月小于一年的时候
+             {
+                month = parseInt(timeLength/3600/24/30) ;
+                timeLength = timeLength%(3600*24*30); //对月取模
+                getTime(timeLength);
+
+             }
+             if(60*60*24<=timeLength&&timeLength < 60*60*24*30)   //当时间大于一天小于一个月的时候
+             {
+                day = parseInt(timeLength/3600/24) ;
+                timeLength = timeLength%(3600*24); //对天取模
+                getTime(timeLength);
+             }
+              if(60*60<=timeLength&&timeLength < 60*60*24)   //当时间大于一小时小于一个天的时候
+             {
+                hour = parseInt(timeLength/3600) ;
+                timeLength = timeLength%(3600); //对小时取模
+                getTime(timeLength);
+             }
+              if(60<=timeLength&&timeLength < 60*60)   //当时间大于一分钟小于一小时的时候
+             {
+                minute = parseInt(timeLength/60) ;
+                timeLength = timeLength%(60); //对小时取模
+                getTime(timeLength);
+             }
+            if(timeLength < 60)   //当时间大于一分钟小于一小时的时候
+             {
+                return;
+             }          
+         
+
+        }
+         return str;
+    }
+</script>
+ 
